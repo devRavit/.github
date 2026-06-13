@@ -1,0 +1,52 @@
+name: Commit message lint
+
+on:
+  workflow_call:
+    inputs:
+      allowed_types:
+        description: "허용 type 정규식 (기본: 표준 9종)"
+        required: false
+        type: string
+        default: "feat|fix|refactor|perf|chore|docs|test|style|build"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages in PR
+        env:
+          ALLOWED: ${{ inputs.allowed_types }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ -z "$BASE_REF" ]]; then
+            echo "ℹ️  pull_request 컨텍스트가 아님 — skip"
+            exit 0
+          fi
+          git fetch origin "$BASE_REF" --depth=50
+          PATTERN="^($ALLOWED)(\([^)]+\))?: .+"
+          fail=0
+          while IFS= read -r msg; do
+            [[ -z "$msg" ]] && continue
+            if ! [[ "$msg" =~ $PATTERN ]]; then
+              echo "❌ $msg"
+              fail=1
+            else
+              echo "✅ $msg"
+            fi
+          done < <(git log --format='%s' "origin/$BASE_REF..$HEAD_SHA")
+          if [[ "$fail" -eq 1 ]]; then
+            echo
+            echo "커밋 메시지는 '{type}: {한글 메시지}' 형식이어야 합니다."
+            echo "허용 type: $ALLOWED"
+            echo "예시: feat: 사용자 프로필 편집 기능 추가"
+            exit 1
+          fi
