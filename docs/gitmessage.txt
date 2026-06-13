@@ -1,0 +1,18 @@
+# {type}: {한글 메시지}
+#
+# type:
+#   feat     - 새 기능
+#   fix      - 버그 수정
+#   refactor - 동작 변경 없는 구조 개선
+#   perf     - 성능 개선
+#   chore    - 빌드/설정/도구 변경 (코드 미변경)
+#   docs     - 문서만 변경
+#   test     - 테스트만 변경
+#   style    - 포맷·세미콜론 등 기능 무관
+#
+# 헤더 한 줄로 충분하지 않으면 빈 줄 후 본문 작성.
+# 본문은 "왜" 위주. "무엇을" 변경했는지는 diff 가 말해줌.
+#
+# 예시:
+#   feat: lightsail 배포에 host_port / container_port 분리 도입
+#   chore: Claude Code 불필요한 파일 탐색 방지를 위한 .claudeignore 추가
