@@ -106,6 +106,4 @@ jobs:
 
 ## 7. 관련
 
-- **CD 워크플로 중앙화**: [devRavit/deployment-hub](https://github.com/devRavit/deployment-hub) — App Runner / Lightsail / CurseForge 배포 워크플로 호스팅
-- **프로필 페이지**: [devRavit/devRavit](https://github.com/devRavit/devRavit) — github.com/devRavit 상단 노출
 - **공식 문서**: [Default community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)
