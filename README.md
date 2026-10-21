@@ -31,6 +31,7 @@ GitHub 은 user/org 계정에 `.github` 라는 이름의 public repo 가 존재�
 | 워크플로 | 용도 | 호출 방법 | 상태 |
 |---------|------|----------|-----|
 | [`.github/workflows/commitlint.yml`](.github/workflows/commitlint.yml) | PR 의 모든 커밋 메시지가 `{type}: {message}` 컨벤션 준수하는지 검증 | 아래 §4 예시 참조 | ✅ 구현 (experimental) |
+| [`.github/workflows/pr-body.yml`](.github/workflows/pr-body.yml) | PR 본문이 PR 템플릿 헤딩을 모두 갖췄는지(헤딩 목록은 템플릿에서 읽음) + 종류 라벨이 붙었는지 검증 | 아래 §4 예시 참조 | ✅ 구현 |
 | `pr-title.yml` | PR 타이틀 자체가 컨벤션 따르는지 검증 (squash merge 대비) | — | ⏳ 미구현 |
 | `labeler.yml` | 변경 파일 경로 기반 자동 PR 라벨링 (`docs/**` → `documentation` 등) | — | ⏳ 미구현 |
 | `release-please.yml` | conventional commits 기반 CHANGELOG / Release 자동화 | — | ⏳ 미구현 |
@@ -80,6 +81,25 @@ jobs:
   commitlint:
     uses: devRavit/.github/.github/workflows/commitlint.yml@main
 ```
+
+### Reusable workflow 호출 (pr-body 예시)
+
+```yaml
+# .github/workflows/pr-body.yml
+name: PR body
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  pr-body:
+    uses: devRavit/.github/.github/workflows/pr-body.yml@main
+    with:
+      label_pattern: "^(type/.+|bug)$"   # repo 의 종류 라벨 체계. 생략하면 type/* · bug · enhancement · documentation · ci
+```
+
+체크 이름은 `pr-body / required-sections` · `pr-body / required-labels` — branch ruleset 의 필수 체크로 등록한다.
 
 > production 호출 시 `@main` 대신 태그 핀(`@v1`) 권장. 현재 tag 미발행 — 실서비스 도입 전 v1 릴리스 예정.
 

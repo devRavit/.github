@@ -30,11 +30,12 @@ devRavit 계정의 모든 repo 에 적용되는 공통 기여 규칙입니다. �
 
 - **main 직접 푸시 금지**. 모든 변경은 feature branch → PR.
 - 브랜치 이름: `{type}/{slug}` (예: `feat/lightsail-host-port-mapping`, `docs/readme-and-changelog-sync`).
-- PR 본문은 자동 로드되는 PR 템플릿을 채워서 작성. 빈 섹션은 비워두기보다 "해당 없음" 명시.
+- PR 본문은 자동 로드되는 PR 템플릿을 채워서 작성. **헤딩 줄은 그대로**(영문 괄호까지) 두고, 빈 섹션은 비워두기보다 "해당 없음" 명시.
+- `pr-body` reusable workflow 를 호출하는 repo 는 템플릿 헤딩과 종류 라벨을 CI 가 검사한다.
 
 ## PR 라벨
 
-- repo 별로 라벨 체계는 다를 수 있으나 공통 권장 type 라벨:
+- **종류 라벨 하나 이상 필수.** repo 별로 라벨 체계는 다를 수 있으나 공통 권장 type 라벨:
   - `documentation` — 문서·README·CHANGELOG
   - `ci` — GitHub Actions / CI / CD 워크플로
   - `bug` / `enhancement` — 기본 GitHub 라벨
